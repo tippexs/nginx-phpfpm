@@ -1,0 +1,25 @@
+version: '3'
+services:
+  # Nginx server configuration
+  web:
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
+    container_name: nginx
+    depends_on:
+      - php-fpm
+    links:
+      - php-fpm
+    volumes:
+      - ./content/:/var/www/html/
+    ports:
+      - "8080:80"
+  # PHP-FPM configuration
+  php-fpm:
+    build:
+      context: ./php
+      dockerfile: Dockerfile
+    container_name: php-fpm
+    volumes:
+      - ./content/:/var/www/html/
+      - ./php/php.ini:/usr/local/etc/php/php.ini
